@@ -5,4 +5,5 @@
   connection: ssh
   tasks:
     - name: ping host "{{ inventory_hostname }}"
-      ping
+      ping:
+      
