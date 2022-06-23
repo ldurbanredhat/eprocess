@@ -1,0 +1,8 @@
+---
+- name: testing connectivity
+  hosts: epg-ansibleblogs
+  gather_facts: true
+  connection: ssh
+  tasks:
+    - name: ping host "{{ inventory_hostname }}"
+      ping
