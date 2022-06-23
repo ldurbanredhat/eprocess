@@ -4,6 +4,5 @@
   gather_facts: true
   connection: ssh
   tasks:
-    - name: ping host "{{ inventory_hostname }}"
+    - name: ping host #"{{ inventory_hostname }}"
       ping:
-      
