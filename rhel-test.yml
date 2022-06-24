@@ -1,6 +1,6 @@
 ---
 - name: testing connectivity
-  hosts: epg-ansibleblogs
+  hosts: ee
   gather_facts: true
   connection: ssh
   tasks:
