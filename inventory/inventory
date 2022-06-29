@@ -1,2 +1,2 @@
 [all]
-epg-ansibleblogs ansible_host=10.8.171.78 ansible_connection: ssh
+epg-ansibleblogs ansible_host=10.8.171.78 ansible_connection=ssh
