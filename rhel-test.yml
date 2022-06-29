@@ -1,8 +1,8 @@
 ---
 - name: testing connectivity
-  hosts: ee
+  hosts: all
   gather_facts: true
   connection: ssh
   tasks:
-    - name: ping host #"{{ inventory_hostname }}"
+    - name: check connectivity
       ping:
