@@ -1,5 +1,5 @@
 ansible_connection: ssh
-ansible_user: root
-ansible_password: .Jet454bead*#
+# ansible_user: root
+# ansible_password: .Jet454bead*#
 ansible_become_method: sudo
 
