@@ -4,5 +4,5 @@
   gather_facts: true
   connection: ssh
   tasks:
-    - name: check connectivity
+    - name: pinging device
       ping:
