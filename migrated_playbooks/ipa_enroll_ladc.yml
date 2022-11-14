@@ -1,0 +1,22 @@
+- hosts: "{{ HOSTS }}"
+  vars: 
+    ipa_server: idm-replica.unix.eco
+    ipa_server_ip: 10.4.137.236
+    ipa_domain: unix.eco
+    ipa_realm: UNIX.ECO
+    ipa_admin_password: ABCD123
+
+  tasks:
+   - shell: yum clean all
+   - name: IPA client packages installed 
+     package:
+        name: "{{ item }}"
+        state: present
+     with_items:
+     - ipa-client
+     - ipa-client-common
+     - python2-ipaclient
+     - python2-ipalib
+
+   - name: Install IPA client
+     shell: ipa-client-install --principal=admin --server="{{ ipa_server }}" --domain=unix.eco  --mkhomedir --password="{{ ipa_admin_password }}" --force-join --unattended

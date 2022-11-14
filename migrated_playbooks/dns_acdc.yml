@@ -1,0 +1,15 @@
+---
+- hosts: client8
+  tasks:
+  - name: backup DNS configuration
+    shell: cp /etc/resolv.conf /etc/resolv.conf_old.bkp
+  - name: remove existing dns entries
+    shell: nmcli con modify ens192 -ipv4.dns ""
+  - name: set new DNS entries
+    shell: nmcli con modify ens192 +ipv4.dns "192.168.41.179 192.168.41.180 10.8.104.10 10.8.104.19"
+  - name: restart network manager services
+    service:
+       name: NetworkManager
+       state : restarted
+  - name: Display DNS entry
+    shell: cat /etc/resolv.conf

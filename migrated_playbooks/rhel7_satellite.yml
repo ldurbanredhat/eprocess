@@ -1,0 +1,35 @@
+---
+- hosts: "{{ HOSTS }}"
+  become: true
+  vars:
+    token: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE2MzA0Nzk2MjUsImp0aSI6IjM3YWNkMDBlZDJlOGRjZTMwOGIyNWIwODAyNTNhMTIwZWEzYTMyNjYwYzEyNGZiMjc2OTAyNzg2OWViM2MwNGYiLCJleHAiOjM2MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDE2MzA0Nzk2MjV9.uMoWqZYd0-q5jtF4YsHaz6SJDeK3Dd-9q9ZtvbKsWu0
+  tasks:
+
+  - name: Get Satellite registration Scripts
+    uri:
+      url: https://epg-rhs-capsule-01.ecobank.group:9090/register?activation_key=hosts_activation_key&hostgroup_id=4&location_id=3&organization_id=1&remote_execution_interface=ens192&setup_insights=true&setup_remote_execution=true
+      method: GET
+      headers:
+        Authorization: 'Bearer {{ token }}'
+      validate_certs: no
+      dest: /var/tmp/satellite.sh
+      mode: 0644
+    register: result
+
+  - name: Register Client to LaDC Satellite Capsule
+    command: "sh /var/tmp/satellite.sh"
+    ignore_errors: yes
+
+  - name: Install the katello-host-tools and katello-host-tools-tracer
+    yum:
+      name:
+        - katello-agent
+        - katello-host-tools-tracer
+      state: latest
+  - name: Copy Insight Client Script 
+    copy: src=insight-client.sh dest=/var/tmp/insight-client.sh
+  
+  - name: Install Insight Client 
+    command: "sh /var/tmp/insight-client.sh" 
+    ignore_errors: yes
+

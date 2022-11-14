@@ -1,0 +1,25 @@
+---
+- hosts: "{{ HOSTS }}"
+  remote_user: mmintah@unix.eco
+  tasks:
+  - name: Refresh repo
+    shell: yum clean all; yum repolist all
+  - name: Install newrelic packages
+    yum:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - newrelic-infra
+  - name: Copy config file
+    copy:
+      src: /home/mmintah/playbooks/newrelic-infra.yml
+      dest: /etc/newrelic-infra/
+  - name : enable new relic services
+    service:
+       name: newrelic-infra
+       enabled : yes
+  - name : restart new relic services
+    service:
+       name: newrelic-infra
+       state : restarted  
+

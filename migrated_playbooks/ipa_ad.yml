@@ -1,0 +1,56 @@
+---
+- hosts: "{{ HOSTS }}"
+  tasks:
+  - name: Backup krb5.conf
+    shell: cp /etc/krb5.conf /etc/krb5.conf.old
+  - name: Backup sssd.conf
+    shell: cp /etc/sssd/sssd.conf /etc/sssd/sssd.conf.old
+  
+  - name: Set dns_lookup in krb5.conf
+    replace:
+      dest: /etc/krb5.conf
+      regexp: "^  {{ item }} = false"
+      replace: "  {{ item }} = true"
+    with_items:
+     - dns_lookup_realm
+     - dns_lookup_kdc
+
+
+  - name: Set auth_to_local in krb5.conf
+    blockinfile:
+      path: /etc/krb5.conf
+      insertafter: '^    pkinit_pool'
+      block: |
+          auth_to_local = RULE:[1:$1@$0](^.*@ECOBANK.GROUP$)s/@ECOBANK.GROUP/@ecobank.group/
+          auth_to_local = DEFAULT
+
+  - name: Configure login Shell and home dir in /etc/sssd/sssd.conf
+    blockinfile:
+      path: /etc/sssd/sssd.conf
+      insertafter: '^dns_discovery_domain'
+      block: |
+        override_shell=/bin/bash
+        homedir_substring = /home 
+        krb5_auth_timeout = 12
+ 
+  - name: Add pac service in sssd.conf
+    lineinfile:
+     path: /etc/sssd/sssd.conf
+     regexp: '^services'
+     line: |
+        services = nss, sudo, pam, ssh, pac
+        domain_resolution_order = ecobank.group, unix.eco
+
+  - name: Set pam_id timeout service in sssd.conf
+    lineinfile:
+      path: /etc/sssd/sssd.conf
+      regexp: 'pam'
+      line: |
+        [pam]
+        pam_id_timeout = 12
+
+  - name: Restart sssd and sshd
+    shell: service sssd stop; rm -f /var/lib/sss/db/* ; service sssd start && systemctl restart sshd
+    #shell:  systemctl stop sssd; rm -f /var/lib/sss/db/* ; systemctl start sssd
+
+

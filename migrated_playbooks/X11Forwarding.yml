@@ -1,0 +1,51 @@
+---
+- hosts: client8 
+  remote_user: root
+  tasks:
+  - name: Install Packages
+    yum:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - mdatp
+      - xorg-x11-server-Xorg 
+      - xorg-x11-xauth 
+      - xterm
+      - java-1.8.0-openjdk-1:1.8.0.302.b08-0.el8_4.x86_64
+      - ipa-client
+      - sssd
+  - name: Enable X11Forwarding on /etc/ssh/sshd_config
+    replace:
+      path: /etc/ssh/sshd_config
+      regexp: 'X11Forwarding no'
+      replace: 'X11Forwarding yes'
+  - name: Restart sshd Service 
+    service:
+      name: sshd
+      state: restarted 
+  - name: Enroll Server on idm
+    shell: ipa-client-install --principal=aankrah --server="idm.unix.eco" --server="idm-replica.unix.eco" --domain=unix.eco --mkhomedir --password='ABCD123' --unattended --force-join
+    tags: 
+    - idm
+  - name: Remove Cache file in sssd
+    shell: rm -f /var/lib/sss/db/*
+  - name: Restart sssd Service 
+    service: 
+      name: sssd
+      state: restarted
+    tags:
+    - ssd
+  - name: Firewall Ports  
+    firewalld:
+      port: "{{ item }}" 
+      state: enabled 
+      permanent: yes 
+      immediate: yes
+    with_items:
+      - 22/tcp
+      - 5556/tcp 
+      - 7001-7006/tcp
+      - 7501-7506/tcp
+      - 443/tcp
+    tags:
+    - firewall

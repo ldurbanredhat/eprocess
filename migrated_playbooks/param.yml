@@ -1,0 +1,53 @@
+---
+- hosts: "{{ HOSTS }}"
+  tasks:
+  - name: Backup /etc/hosts
+    shell: cp /etc/hosts /etc/hosts.bak
+  - name: Update /etc/hosts
+    lineinfile:
+      line: | 
+          10.8.137.236    idm.unix.eco idm
+          10.8.171.64    idm-02.unix.eco idm-02
+      dest: /etc/hosts
+  - name: remove repo files
+    shell: rm -f /etc/yum.repos.d/*.repo
+  - name: Copy central repo file
+    copy:
+      src: local-net.repo
+      dest: /etc/yum.repos.d/local-net.repo
+  - name: Ensure correct Timezone
+    timezone:
+     name: Africa/Accra
+
+  - name: Install Chrony
+    yum: name=chrony state=present
+  - name: Copy chrony.conf
+    copy:
+     src: chrony.conf
+     dest: /etc/chrony.conf
+    notify:
+    - start_chronyd
+  - name: Convert hostname to lower case
+    shell: hostnamectl set-hostname $(echo "$HOSTNAME" | tr '[:upper:]' '[:lower:]')
+  - name: Convert hostname to lower case
+    shell: tr '[:upper:]' '[:lower:]' < /etc/hosts > /etc/hosts.tmp
+  - shell: cat /etc/hosts.tmp > /etc/hosts
+  - name: stop ntp
+    service: { name=ntpd state=stopped enabled=no  }
+    ignore_errors: yes
+  - name: Remove ECOBANK realm
+    shell: echo "ABCD123" | realm leave ecobank.group -U 'ECOBANK.GROUP\unix_ldap' --remove
+    ignore_errors: yes
+  - name: Deny appuser direct login
+    lineinfile:
+      line: DenyUsers appuser
+      dest: /etc/ssh/sshd_config
+    notify: 
+    - deny_appuser
+
+  handlers: 
+  - name: start_chronyd
+    service: name=chronyd state=restarted enabled=yes
+  - name: deny_appuser
+    service: name=sshd state=restarted enabled=yes
+

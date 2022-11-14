@@ -1,0 +1,28 @@
+---
+- hosts: "{{ servers }}"
+  tasks:
+  - name: backup configuration files
+    shell: cp /etc/pam.d/sshd /etc/pam.d/sshd.bak && cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+  #- name: Install radius pam module package
+   # yum: name=pam_radius state=present
+  - block:
+    - name: copy pam radius packages
+      copy: src=pam_radius-1.4.0-2.el7.x86_64.rpm dest=/var/tmp/pam_radius-1.4.0-2.el7.x86_64.rpm
+    - shell: "rpm -ivh /var/tmp/pam_radius-1.4.0-2.el7.x86_64.rpm --replacepkgs"
+  - name: Create raddb diretory
+    file:
+      state: directory
+      path: /etc/raddb
+  - name: Copy configuration files
+    copy:
+      src: radius_rhel7.conf
+      dest: /etc/pam_radius.conf
+  - copy:
+      src: radius_rhel7.conf
+      dest: /etc/raddb/server
+  - name: Configure PAM
+    copy:
+      src: pam_sshd_rhel7
+      dest: /etc/pam.d/sshd 
+  - name: Restart sshd
+    service: name=sshd state=restarted 

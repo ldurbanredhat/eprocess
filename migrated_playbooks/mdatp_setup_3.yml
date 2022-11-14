@@ -1,0 +1,29 @@
+---
+- hosts: idm 
+  remote_user: aankrah@unix.eco 
+  tasks:
+  - name: Install MDATP packages
+    yum:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - mdatp
+      - python
+  - name: Copy WindowsDefenderATPOnboarding.py
+    copy:
+      src: /home/aankrah/playbook/MicrosoftDefenderATPOnboardingLinuxServer.py
+      dest: /tmp
+  - name: Run Python Scripts
+    raw: python /tmp/MicrosoftDefenderATPOnboardingLinuxServer.py
+  - name: Copy json file to /etc/opt/microsoft/mdatp/managed/
+    copy:
+      src: /home/aankrah/playbook/mdatp_managed.json
+      dest: /etc/opt/microsoft/mdatp/managed/
+  - name: Run mdatp to Enable RealTimeProtection
+    raw: mdatp --config realTimeProtectionEnabled True
+  - name: Run mdatp to Enable cloudDiagnostic
+    raw: mdatp --config cloudDiagnosticEnabled on
+  - name: Run mdatp to Enable edrEarlyPreview
+    raw: mdatp --edr --early-preview on 
+  - name: mdatp to check healh status
+    raw: mdatp --health orgId

@@ -1,0 +1,17 @@
+---
+- hosts: "{{ servers }}"
+  tasks:
+  - name: Create repo file
+    shell: touch /etc/yum.repos.d/rhel77.repo
+  - name: Add repo
+    blockinfile:
+      dest: /etc/yum.repos.d/rhel77.repo
+      block: |
+        [rhel77]
+        name=Red Hat Enterprise Linux 7.7
+        baseurl=file:///media
+        gpgcheck=0
+        enabled=1
+
+
+ 

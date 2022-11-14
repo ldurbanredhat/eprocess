@@ -1,0 +1,24 @@
+---
+- hosts: "{{ HOSTS }}"
+  tasks:
+  - name: Copy setup to node
+    copy:
+      src: ~/gpfs5-linux-install
+      dest: /tmp/gpfs5-linux-install
+      mode: a+x
+  - name: Run installer
+    shell: /tmp/gpfs5-linux-install --silent
+  - name: Install GPFS base
+    shell: |
+      cd /usr//lpp/mmfs/5.0.2.3/gpfs_rpms/
+      rpm -ivh gpfs.base*.rpm
+      rpm -ivh gpfs.gpl*rpm
+      rpm -ivh gpfs.license.adv*.rpm
+      rpm -ivh gpfs.gskit*rpm 
+      rpm -ivh gpfs.msg*rpm 
+      rpm -ivh gpfs.adv*rpm 
+      rpm -ivh gpfs.crypto*rpm
+  - name: GPFS build gpl
+    shell: | 
+      /usr/lpp/mmfs/bin/mmbuildgpl
+

@@ -1,0 +1,32 @@
+---
+- hosts: "{{ HOSTS }}"
+  tasks:
+  - name: Backup /etc/hosts
+    shell: cp /etc/hosts /etc/hosts.bak
+  - name: Backup /etc/rsyslog.conf
+    shell: cp /etc/rsyslog.conf /etc/rsyslog.conf.bak
+  - name: Update /etc/hosts
+    lineinfile:
+      line: 10.8.191.142     logserver
+      dest: /etc/hosts
+  - name: Update /etc/rsyslog.conf
+    blockinfile:
+      dest: /etc/rsyslog.conf
+      block: |
+        authpriv.* @logserver:514
+        kern.*     @logserver:514
+        cron.*     @logserver:514
+
+ 
+  - name: restart rsyslog
+    service: name=rsyslog state=restarted enabled=yes
+#  - name: Configure Firewall
+#    shell: | 
+#      firewall-cmd --add-port=514/udp --permanent
+#      firewall-cmd --reload
+
+
+
+
+
+

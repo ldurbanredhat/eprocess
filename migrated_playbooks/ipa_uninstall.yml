@@ -1,0 +1,11 @@
+- hosts: "{{ HOSTS }}"
+  vars:
+    ipa_server: idm-replica.unix.eco
+    ipa_server_ip: 10.8.137.236
+    ipa_domain: unix.eco
+    ipa_realm: UNIX.ECO
+    ipa_admin_password: ABCD123
+
+  tasks:
+   - name: Uninstall IPA client
+     shell: ipa-client-install --uninstall --unattended

@@ -1,0 +1,11 @@
+- hosts: "{{ HOSTS }}"
+  vars_prompt:
+  - name: user
+    prompt: "User"
+    private: no
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Unlock user account
+    shell: chuser account_locked=false "{{ user }}" &&  chsec -f /etc/security/lastlog -a "unsuccessful_login_count=0" -s "{{ user }}"
+

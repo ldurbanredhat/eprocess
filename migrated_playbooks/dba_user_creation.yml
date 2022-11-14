@@ -1,0 +1,14 @@
+---
+- hosts: "{{ HOSTS }}"
+  vars_prompt:
+  - name: user
+    prompt: "User"
+    private: no 
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Create User
+    shell: useradd -d /home/"{{ user }}" -m -g oinstall -G oinstall,dba -s /bin/ksh "{{ user }}"
+    #when: ansible_os_family=="AIX"
+
+...

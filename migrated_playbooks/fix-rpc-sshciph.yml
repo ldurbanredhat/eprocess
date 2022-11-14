@@ -1,0 +1,60 @@
+---
+- name: Fix Hidden RPC & deprecated ciphers vulnerabilities
+  hosts: "{{ HOSTS }}"
+  become: yes
+  vars_files:
+     - vars.yml
+  tasks:
+  - name: Fix deprecated ciphers for ssh
+    block:
+      - name: set ciphers
+        lineinfile:
+          path: "{{ item }}"
+          regexp: Ciphers
+          line: Ciphers aes128-cbc,aes192-cbc,aes256-cbc,aes128-cbc,aes128-ctr,aes256-ctr
+        loop: "{{ ssh_config_files }}"
+        notify: restart sshd
+      - name: set kex algorithms
+        lineinfile:
+          path: "{{ item }}"
+          regexp: KexAlgorithms
+          line: kexalgorithms diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1
+        loop: "{{ ssh_config_files }}"
+    #always:
+      #- name: insert if no existing occurence
+        #lineinfile:
+          #path: "{{ item }}"
+          #line: Ciphers aes128-cbc,aes192-cbc,aes256-cbc,3des-cbc,blowfish-cbc,aes128-cbc,aes128-ctr,aes256-ctr
+        #loop: "{{ ssh_config_files }}"
+        #notify: restart sshd
+      - shell: "sshd -T | egrep -iw 'ciphers|kexalgorith'"
+        register: ciphers
+      - name: check status -show ciphers
+        debug:
+            var: ciphers.stdout
+  - name: Fix SSH key length
+    block:
+    - name: remove DSA keys 
+      file:
+        state: absent
+        path: "{{ item }}" 
+      loop: "{{ dsa_keys }}"
+    - name: set AUTOCREATE in sshd sysconfig to generate only RSA
+      lineinfile:
+        path: /etc/sysconfig/sshd
+        regexp: "AUTOCREATE_SERVER_KEYS=RSAONLY"
+        line: AUTOCREATE_SERVER_KEYS=RSAONLY
+      notify: restart sshd
+    - name: Enable Hostkey RSA line in sshd_config
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "#HostKey /etc/ssh/ssh_host_rsa_key"
+        line: HostKey /etc/ssh/ssh_host_rsa_key
+      notify: restart sshd 
+
+  handlers:
+  - name: restart sshd
+    service:
+       name: sshd
+       state: restarted 
+ 

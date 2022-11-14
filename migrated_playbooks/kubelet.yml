@@ -1,0 +1,20 @@
+---
+- hosts: "{{ HOSTS }}"
+  tasks:
+
+  - name: Update kubelet.service file
+    blockinfile:
+      path: /etc/systemd/system/kubelet.service
+      insertafter: 'keep-terminated-pod-volumes=false'
+      block: |
+          --housekeeping-interval=30s
+
+  - name: Reload daemon
+    shell: systemctl daemon-reload
+
+  - name: Restart kubelet service
+    service:
+      name: kubelet
+      state: restarted
+
+

@@ -1,0 +1,10 @@
+---
+- hosts: "{{ group }}"
+  tasks:
+  - name: Backup active sshd_config
+    shell: mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
+  - name: Restore original sshd_config
+    shell: cp /etc/ssh/sshd_config.bak /etc/ssh/sshd_config
+  - name: Restart sshd
+    service: name=sshd state=restarted enabled=yes
+

@@ -1,0 +1,23 @@
+---
+- hosts: "{{ HOSTS }}" 
+  become: true
+  vars_prompt:
+  - name: user
+    prompt: "Service Account"
+  - name: password
+    prompt: "Service Password"
+    private: no
+  tasks:
+  - block:
+    - name: reset service account user
+      shell: chuser account_locked=false "{{ user }}" && chsec -f /etc/security/lastlog -a "unsuccessful_login_count=0" -s "{{ user }}" && echo "{{ user }}:{{ password }}" | chpasswd && pwdadm -c "{{ user }}"
+    - name: Adding to AuthUsers group 
+      shell: usermod -G `id -nG "{{ user }}" | tr " " ","`,AuthUsers "{{ user }}"
+    when: ansible_os_family=="AIX"
+    ignore_errors: yes
+  - block: 
+    - name: reset service account user
+      shell: echo "{{ password }}" | passwd --stdin "{{ user }}"
+    - name: Adding to AuthUsers group
+      user: name="{{ user }}" groups=authusers append=yes
+    when: ansible_os_family=="RedHat"

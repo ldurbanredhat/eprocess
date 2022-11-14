@@ -1,0 +1,14 @@
+---
+- hosts: testing 
+  remote_user: aankrah@unix.eco
+  tasks:
+  - name: Create /tmp/audit directory
+    file:
+      path: /tmp/audit
+      state: directory
+      mode: "u=rwx,g=rwx,o=rx"
+      recurse: yes
+  - name: Copy Linux Script to /tmp/audit
+    copy:
+      src: /home/aankrah/playbook/ACTT_Linux_v17.0.sh
+      dest: /tmp/audit/

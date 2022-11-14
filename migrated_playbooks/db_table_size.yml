@@ -1,0 +1,35 @@
+---
+- hosts: "{{ HOSTS }}"
+  become: true
+  become_method: su
+  become_user: oracle
+  environment:
+    #SHELL: "/usr/bin/bash"
+    ORACLE_HOME: "/usr/oracle/ora19c_home"
+    GRID_HOME: "/usr/oracle/GRID_HOME19c"
+    HOME: "/home/oracle"
+    LD_LIBRARY_PATH: "/usr/oracle/ora19c_home/lib:/usr/oracle/GRID_HOME19c/lib:/usr/oracle/ora19c_home/lib32:/usr/oracle/GRID_HOME19c/lib32"
+    PATH: "/usr/oracle/ora19c_home/bin:/usr/oracle/ora19c_home/OPatch:/usr/oracle/ora19c_home/suptools/oratop:/usr/oracle/GRID_HOME19c/bin:/usr/bin:/etc:/usr/sbin:/usr/ucb:/home/oracle/bin:/usr/bin/X11:/sbin"
+  tasks:
+    - name: Check DB Service status
+      shell: crsctl check crs
+      register: services
+    - debug: var=services.stdout_lines
+    
+    - name: Check DB  status
+      shell:  srvctl status service -d FCUBSNIGLG
+      #shell: sqlplus -s "/as sysdba" @role
+      register: db
+    - debug: var=db.stdout_lines
+    
+
+    - name: Check DB  current config 
+      shell: srvctl config database -d FCUBSNIGLG
+      register: db
+    - debug: var=db.stdout_lines
+    - name: DGMGRL 
+      shell: dgmgrl -silent sys/oracle@123@FCUBSNIGLG "show database 'FCUBSNIGLG'"
+      register: db
+    - debug: var=db.stdout_lines
+
+

@@ -1,0 +1,64 @@
+---
+- hosts: "{{ HOSTS }}"
+  vars:
+     VAR_DIR: "{{  ansible_hostname }}"
+  tasks:
+  - block:
+    - name: Server Uptime
+      shell: uptime  > "/var/tmp/uptime_{{ ansible_hostname }}"
+    - name: List of mounted filesystems
+      shell: df | grep dev | awk '{print $7}' > "/var/tmp/mounts_{{ ansible_hostname }}"
+    - name: Filesystems sizes
+      shell: df -gi | grep dev | awk '{if (NF==1) {line=$0;getline;sub(" *"," ");print line$0} else {print}}' | awk '{ printf "%-25s %-10d %-10d %-10s %-10s\n", $7,$2,$3,$4,$6 }' | sort -k4,rn > "/var/tmp/fs_sizes_{{ ansible_hostname }}"
+    - name: GPFS Filesystems 
+      shell: |
+            mmdf rman | grep -i inodes > "/var/tmp/gpfs_{{ ansible_hostname }}"
+            mmgetstate >> "/var/tmp/gpfs_{{ ansible_hostname }}"
+    - name: Compute
+      shell: lparstat -i | grep -Ei "type|online" > "/var/tmp/compute_{{ ansible_hostname }}"
+    - name: Swap Space
+      shell: lsps -s > "/var/tmp/swap_{{ ansible_hostname }}"
+    - name: Main system error logs
+      shell: errpt | head -n10 > "/var/tmp/logs_{{ ansible_hostname }}"
+    - name: Fetch info
+      fetch: 
+        src: "{{ item }}"
+        dest: /home/aankrah/aix_checks/{{ VAR_DIR }}/
+        flat: yes
+      with_items:
+      - "/var/tmp/mounts_{{ ansible_hostname }}"
+      - "/var/tmp/fs_sizes_{{ ansible_hostname }}"
+      - "/var/tmp/gpfs_{{ ansible_hostname }}"
+      - "/var/tmp/compute_{{ ansible_hostname }}"
+      - "/var/tmp/swap_{{ ansible_hostname }}"
+      - "/var/tmp/logs_{{ ansible_hostname }}"
+      - "/var/tmp/uptime_{{ ansible_hostname }}"
+    when: ansible_os_family == "AIX"
+  - block:
+    - name: List of mounted filesystems
+      shell: df | grep dev | awk '{print $6}' > "/var/tmp/mounts_{{ ansible_hostname }}"
+    - name: Filesystems sizes
+      shell: df -h | grep dev  | awk '{ printf "%-25s %-10d %-10d %-10s\n", $6,$2,$4,$5 }' | sort -k4 -rn > "/var/tmp/fs_sizes_{{ ansible_hostname }}"
+    - name: Compute
+      shell: lscpu | grep "On-line CPU" > "/var/tmp/compute_{{ ansible_hostname }}"
+    - name: Swap Space
+      shell: free -g > "/var/tmp/swap_{{ ansible_hostname }}"
+    - name: Main system error logs
+      shell: dmesg -T | tail > "/var/tmp/logs_{{ ansible_hostname }}"
+
+    - name: Fetch info
+      fetch:
+        src: "{{ item }}"
+        dest: /home/aankrah/basic_checks/{{ VAR_DIR }}/
+        flat: yes
+      with_items:
+      - "/var/tmp/mounts_{{ ansible_hostname }}"
+      - "/var/tmp/fs_sizes_{{ ansible_hostname }}"
+      - "/var/tmp/compute_{{ ansible_hostname }}"
+      - "/var/tmp/swap_{{ ansible_hostname }}"
+      - "/var/tmp/logs_{{ ansible_hostname }}"
+      - "/var/tmp/uptime_{{ ansible_hostname }}"
+    when: ansible_os_family == "RedHat"
+
+...
+

@@ -1,0 +1,8 @@
+---
+- hosts: testing 
+  remote_user: aankrah@unix.eco
+  tasks:
+  - name: Stop SysAidAgent
+    shell: /usr/lib64/SysAid/scripts/stopService.sh 
+  - name: Start SysAidAgent
+    shell: /usr/lib64/SysAid/scripts/startService.sh

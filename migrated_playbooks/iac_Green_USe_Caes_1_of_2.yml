@@ -1,0 +1,574 @@
+---
+################################### PROJECTS ################################################
+controller_projects:
+- name: Green_USe_Caes_1_of_2
+  organization: Default
+  scm_branch: main
+  scm_clean: 'yes'
+  scm_delete_on_update: 'no'
+  scm_type: git
+  scm_update_on_launch: 'yes'
+  scm_url: https://gitlab.ecobank.group/ldurban/Green_USe_Caes_1_of_2.git
+  credential: creds_vmware_vcenter  
+
+################################### JOB TEMPLATES ################################################
+- name: VMWARE-VM-PROVISION
+  description: VMWARE-VM-PROVISION
+  organization: Default
+  job_type: run
+  inventory: VMWARE-Management-JED
+  project: VGreen_USe_Caes_1_of_2
+  playbook: playbooks.yml
+  become_enabled: false
+  instance_groups:
+    - 
+    - 
+  verbosity: 3
+  execution_environment: autohub-ee_vmware_snow_supported:0.0.2
+  credentials:
+  - "VMware creds"
+  survey_enabled: true
+  survey_spec: "{{ lookup('template', 'template_surveys/VMWARE-VM-PROVISION.yml') | from_yaml }}"
+  extra_vars:
+    task: provision_vm
+
+
+
+
+
+
+
+
+
+
+
+# - name: 2fa_rhel7
+#   description: 2fa_rhel7
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: 2fa_rhel7.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_2fa_rhel7
+#   survey: {}
+
+# - name: acdcdns
+#   description: acdcdns
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: acdcdns.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_acdcdns
+#   survey: {}
+
+
+# - name: "Clean odl kernels"
+#   description: "Clean odl kernels"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: "Clean odl kernels".yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_Clean_odl_kernels
+#   survey: {}
+
+# - name: "cp"
+#   description: "cp"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: "cp".yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_cp
+#   survey: {}
+
+# - name: "daily_check"
+#   description: "daily_check"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: "daily_check".yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_daily_check
+#   survey: {}
+
+# - name: "db_table_size"
+#   description: "db_table_sizek"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: db_table_size.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_db_table_size
+#   survey: {}
+
+# - name: "dba_user_creation"
+#   description: "dba_user_creation"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: dba_user_creation.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_dba_user_creation
+#   survey: {}
+
+# - name: "disable2fa"
+#   description: "disable2fa"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: disable2fa.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_disable2fa
+#   survey: {}
+
+# - name: "dns_acdc"
+#   description: "dns_acdc"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: dns_acdc.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_dns_acdc
+#   survey: {}
+
+# - name: "dr_checks"
+#   description: "dr_checks"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: dr_checks.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_dr_checks
+#   survey: {}
+
+# - name: "fix-rpc-sshciph"
+#   description: "fix-rpc-sshciph"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: fix-rpc-sshciph.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_fix_rpc_sshciph
+#   survey: {}
+
+# - name: "gpfs"
+#   description: "gpfsh"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: gpfs.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_gpfs
+#   survey: {}
+
+# - name: "icp_siem"
+#   description: "icp_siem"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: icp_siem.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_icp_siem
+#   survey: {}
+
+# - name: "idm_ad"
+#   description: "idm_ad"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: idm_ad.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_idm_ad
+#   survey: {}
+
+# - name: "install-java"
+#   description: "install-java"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: install-java.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_install-java
+#   survey: {}
+
+# - name: "ipa_ad"
+#   description: "ipa_ad"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: ipa_ad.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_ipa_ad
+#   survey: {}
+  
+# - name: "ipa_enroll_acdc"
+#   description: "ipa_enroll_acdc"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: ipa_enroll_acdc.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_ipa_enroll_acdc
+#   survey: {}
+    
+# - name: "ipa_uninstall"
+#   description: "ipa_uninstall"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: ipa_uninstall.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_ipa_uninstall
+#   survey: {}
+    
+# - name: "kubelet"
+#   description: "kubelet"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: kubelet.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_kubelet
+#   survey: {}
+    
+# - name: "linux_audit"
+#   description: "linux_audit"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: linux_audit.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_linux_audit
+#   survey: {}
+    
+# - name: "mdatp_setup_3"
+#   description: "mdatp_setup_3"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: mdatp_setup_3.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_mdatp_setup_3
+#   survey: {}
+    
+# - name: "new-relic"
+#   description: "new-relic"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: new-relic.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_new-relic
+#   survey: {}  
+  
+# - name: "newrelic-infra"
+#   description: "newrelic-infra"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: newrelic-infra.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_newrelic-infra
+#   survey: {}
+  
+# - name: "param"
+#   description: "param"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: param.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_param
+#   survey: {}
+  
+# - name: "pca"
+#   description: "pca"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: pca.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_pca
+#   survey: {}
+  
+# - name: "reset_sac"
+#   description: "reset_sac"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: reset_sac.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_reset_sac
+#   survey: {}
+  
+# - name: "restartsysaid"
+#   description: "restartsysaid"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: restartsysaid.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_restartsysaid
+#   survey: {}
+
+# - name: "rhel7_satellite"
+#   description: "rhel7_satellite"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: rhel7_satellite.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_rhel7_satellite
+#   survey: {}
+
+# - name: "rhel8_satellite"
+#   description: "rhel8_satellite"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: rhel8_satellite.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_rhel8_satellite
+#   survey: {}
+
+# - name: "user_unlock_AIX"
+#   description: "user_unlock_AIX"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: user_unlock_AIX.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_user_unlock_AIX
+#   survey: {}
+
+# - name: "X11Forwarding"
+#   description: "X11Forwarding"
+#   organization: Default
+#   job_type: run
+#   inventory: migrated_inventory
+#   project: Migrated_Existing_PlayBooks
+#   playbook: X11Forwarding.yaml
+#   become_enabled: false
+#   instance_groups:
+#     - acdc
+#     - lcdc
+#   verbosity: 3
+#   execution_environment: eprocess_ee_all_minimal:latest
+#   credentials:
+#   - creds_X11Forwarding
+#   survey: {}
+
+
+

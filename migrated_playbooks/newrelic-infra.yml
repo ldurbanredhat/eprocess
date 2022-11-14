@@ -1,0 +1,14 @@
+---
+- hosts: "{{ HOSTS }}"
+  become: true
+  tasks:
+  - name: Install NewRelic infra-agent
+    yum: name=newrelic-infra state=present
+  - name: Copy setup to node
+    copy:
+      src: ~/newrelic/newrelic-infra.yml
+      dest: /etc/newrelic-infra.yml
+  - name: Enable and Start NewRelic infra-agent 
+    service: name=newrelic-infra state=restarted enabled=yes
+   
+

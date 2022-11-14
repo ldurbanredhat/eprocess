@@ -1,0 +1,18 @@
+---
+- hosts: testing 
+  vars:
+    ht: echo $HOSTNAME
+  remote_user: aankrah@unix.eco
+  tasks:
+  - name: Copy 
+    copy: src=/etc/hosts dest=/etc/hosts.bak
+  - name: Update /etc/hosts
+    lineinfile:
+      path:/opt/vantage/pca/etc/pca.conf
+      regexp:'^hostname='
+      line: 'hostname={{ ht }}'
+  - name: Restart pca service
+    service:
+       name: pca
+       state: restarted
+       enabled: yes
