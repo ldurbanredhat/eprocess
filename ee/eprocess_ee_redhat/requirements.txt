@@ -1,0 +1,12 @@
+############### redhat.satellite ##############
+requests>=2.4.2
+ipaddress; python_version < '3.3'
+PyYAML
+
+############## redhat.insights ###############
+# requests already in redhat.satellite
+
+############# middleware_automation.redhat_csp_download ################
+# requirements to install before using redhat-csp-download
+lxml
+# requests aready in redhat.satellite

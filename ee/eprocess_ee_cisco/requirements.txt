@@ -1,0 +1,23 @@
+############### requirements for cisco.nxos #######################
+# paramiko already in cisco.ios
+scp
+
+############### requirements for cisco.iosxr #######################
+ncclient
+ipaddress
+# paramiko==2.8.1 already in cisco.ios
+# ansible-pylibssh already in cisco.ios
+
+############### requirements for cisco.aci #######################
+pyopenssl
+xmljson
+python_dateutil
+cryptography
+xmljson
+
+############### requirements for cisco.ios #######################
+ansible-pylibssh
+paramiko==2.8.1
+
+############### cisco.mso #####################
+requests_toolbelt

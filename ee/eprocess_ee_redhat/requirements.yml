@@ -1,0 +1,17 @@
+---
+collections:
+  #- name: awx.awx
+  #- name: ansible.tower
+  #- name: ansible.controller
+  #- name: redhat_cop.controller_configuration
+################## for redhat.jboss_eap ####################
+  - name: middleware_automation.redhat_csp_download
+    version: ">=1.2.1"
+  - name: community.general
+######################################
+  - name: redhat.insights
+  - name: redhat.satellite
+#  - name: redhat.satellite_operations 
+#  - name: redhat.rhel_idm
+#  - name: redhat.jboss_eap
+#  - name: redhat.rhel_system_roles

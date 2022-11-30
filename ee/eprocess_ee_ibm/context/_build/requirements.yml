@@ -1,0 +1,16 @@
+---
+collections:
+  - name: ansible.netcommon
+    version: ">=2.0.0"
+  - name: f5networks.f5_modules
+    source: https://github.com/F5Networks/f5-ansible-f5modules#ansible_collections/f5networks/f5_modules
+    type: git
+    version: devel
+  - name: f5networks.f5_bigip
+    source: https://github.com/F5Networks/f5-ansible-bigip#ansible_collections/f5networks/f5_bigip
+    type: git
+    version: devel
+  - name: ibm.power_aix
+  - name: ibm.power_hmc
+  - name: ibm.qradar
+  - name: ibm.spectrum_virtualize

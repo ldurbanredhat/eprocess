@@ -1,0 +1,7 @@
+gcc [platform:rhel8]
+python3-devel [platform:rhel8]
+krb5-devel [platform:rhel8]
+krb5-libs [platform:rhel8]
+krb5-workstation [platform:rhel8]
+
+

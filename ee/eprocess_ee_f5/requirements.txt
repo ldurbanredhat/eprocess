@@ -1,0 +1,13 @@
+############### requirements for f5 networks f5 modules #######################
+ansible>=2.9.0
+q
+invoke
+
+############# requirements for f5 networks BigIP  #######################
+cryptography
+objectpath
+ordereddict
+simplejson
+paramiko
+jinja2
+netaddr

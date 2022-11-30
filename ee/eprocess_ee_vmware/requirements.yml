@@ -1,0 +1,8 @@
+---
+collections:
+#  - name: awx.awx
+#  - name: redhat_cop.controller_configuration
+  - name: vmware.alb
+  - name: vmware.vmware_rest    
+  - name: community.vmware
+  - name: community.general

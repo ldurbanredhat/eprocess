@@ -1,0 +1,53 @@
+############## requirements for f5 networks f5 modules #######################
+ansible>=2.9.0
+q
+invoke
+
+############# requirements for f5 networks BigIP  #######################
+cryptography
+objectpath
+ordereddict
+simplejson
+#paramiko
+jinja2
+netaddr
+
+############# ibm.power_hmc #####################
+lxml
+
+########### ibm.spectrum_virtualise ###############
+# paramiko>=0.14.0 already in cisco.ios
+python_version >= '2.7'
+############### requirements for cisco.nxos #######################
+# paramiko already in cisco.ios
+scp
+
+############### requirements for cisco.iosxr #######################
+ncclient
+ipaddress
+# paramiko==2.8.1 already in cisco.ios
+# ansible-pylibssh already in cisco.ios
+
+############### requirements for cisco.aci #######################
+pyopenssl
+xmljson
+python_dateutil
+# cryptography already in f5 bigip
+
+############### requirements for cisco.ios #######################
+ansible-pylibssh
+paramiko==2.8.1
+
+############### cisco.mso #####################
+requests_toolbelt
+############### vmware.alb ##############
+requests==2.25.1
+pyVmomi==7.0.2
+pyVim==3.0.2
+
+############## vmware.vmware_rest ##############
+aiohttp
+
+############## community.vmware ###############
+###pyVmomi>=6.7 in vmware.alb
+git+https://github.com/vmware/vsphere-automation-sdk-python.git ; python_version >= '2.7'  # Python 2.6 is not supported

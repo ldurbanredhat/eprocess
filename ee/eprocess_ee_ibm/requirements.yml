@@ -1,0 +1,6 @@
+---
+collections:
+  - name: ibm.power_aix
+  - name: ibm.power_hmc
+  - name: ibm.qradar
+  - name: ibm.spectrum_virtualize

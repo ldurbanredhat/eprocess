@@ -1,0 +1,25 @@
+---
+- name: Cisco Ping Test
+  hosts: ios
+  gather_facts: no
+  #connection: ssh
+  tasks:
+#    - name: Ping test connectivity
+#      ping:
+
+    - name: Check version
+      ios_command:
+        commands: show version | inc Version
+      register: _show_version
+
+    - name: Set Clock
+      #ios_command:
+      ios_config:
+        lines:
+          - clock timezone UTC -2
+          - clock set 17:55:00 Jun 2022 
+            #register: _show_version
+
+    - name: Show Version
+      debug:
+        var: _show_version
